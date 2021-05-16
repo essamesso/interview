@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:test_work/Models/Blog.dart';
+import 'package:test_work/Screens/home/componets/sidemenu.dart';
+import 'package:test_work/Screens/home/listviewblog.dart';
 import 'package:test_work/ViewModels/BloglistViewModel.dart';
+import 'package:test_work/resposive.dart';
 import 'package:test_work/widgets/BlogCard.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,6 +17,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     Provider.of<BlogListViewModel>(context, listen: false).fetchblog();
@@ -22,24 +27,43 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<BlogModel> listblog =
-        Provider.of<BlogListViewModel>(context).blogslist;
     return Scaffold(
-      appBar: AppBar(title: Text('home'),
-      centerTitle: true,),
-      body: SafeArea(
-        child: listblog.isNotEmpty?ListView.builder(
-          padding: EdgeInsets.all(0.0),
-          shrinkWrap: true,
-          itemCount: listblog.length,
-          physics: BouncingScrollPhysics(),
-          itemBuilder: (context, i) {
-            return BlogCard(
-              blogModel: listblog[i],
-            );
-          },
-        ):Center(child: CircularProgressIndicator())
+      key: _scaffoldkey,
+      drawer: SideMenu(),
+      appBar: AppBar(
+        title: Text('home'),
+        centerTitle: true,
+        leading: Responsive.isMobile(context)
+            ? IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  _scaffoldkey.currentState.openDrawer();
+                },
+              )
+            : SizedBox.shrink(),
       ),
+      body: SafeArea(
+          child: Responsive(
+       /* desktop: Row(
+          children: [
+            Expanded(flex: 2, child: SideMenu()),
+            Expanded(
+              flex: 8,
+              child: ListViewBlog(),
+            )
+          ],
+        ),*/
+        mobile: ListViewBlog(),
+        tablet: Row(
+          children: [
+            Expanded(flex: 2, child: SideMenu()),
+            Expanded(
+              flex: 8,
+              child: ListViewBlog(),
+            )
+          ],
+        ),
+      )),
     );
   }
 }
