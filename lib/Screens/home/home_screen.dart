@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_work/Models/Blog.dart';
 import 'package:test_work/Screens/home/componets/sidemenu.dart';
 import 'package:test_work/Screens/home/listviewblog.dart';
 import 'package:test_work/ViewModels/BloglistViewModel.dart';
 import 'package:test_work/resposive.dart';
-import 'package:test_work/widgets/BlogCard.dart';
 
 class HomeScreen extends StatefulWidget {
   final int token;
@@ -44,21 +42,21 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SafeArea(
           child: Responsive(
-       /* desktop: Row(
+        desktop: Row(
           children: [
-            Expanded(flex: 2, child: SideMenu()),
+            Expanded(flex: 4, child: SideMenu()),
             Expanded(
-              flex: 8,
+              flex: 6,
               child: ListViewBlog(),
             )
           ],
-        ),*/
+        ),
         mobile: ListViewBlog(),
         tablet: Row(
           children: [
-            Expanded(flex: 2, child: SideMenu()),
+            Expanded(flex: 4, child: SideMenu()),
             Expanded(
-              flex: 8,
+              flex: 6,
               child: ListViewBlog(),
             )
           ],
